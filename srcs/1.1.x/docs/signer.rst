@@ -1,10 +1,10 @@
 .. module:: itsdangerous.signer
 
-Signing Interface
-=================
+서명 인터페이스
+===============
 
-The most basic interface is the signing interface. The :class:`Signer`
-class can be used to attach a signature to a specific string:
+가장 기본적인 인터페이스는 서명 인터페이스다. :class:`Signer`
+클래스를 써서 특정 문자열에 서명을 붙일 수 있다.
 
 .. code-block:: python
 
@@ -13,20 +13,20 @@ class can be used to attach a signature to a specific string:
     s.sign("my string")
     b'my string.wh6tMHxLgJqB6oY1uT73iMlyrOA'
 
-The signature is appended to the string, separated by a dot. To validate
-the string, use the :meth:`~Signer.unsign` method:
+마침표로 구분해서 문자열 뒤에 서명이 덧붙는다. 문자열을 검증하려면
+:meth:`~Signer.unsign` 메소드를 쓰면 된다.
 
 .. code-block:: python
 
     s.unsign(b"my string.wh6tMHxLgJqB6oY1uT73iMlyrOA")
     b'my string'
 
-If unicode strings are provided, an implicit encoding to UTF-8 happens.
-However after unsigning you won't be able to tell if it was unicode or
-a bytestring.
+유니코드 문자열을 주면 암묵적으로 UTF-8 인코딩이 이뤄진다.
+하지만 서명 검증 후에 그 문자열이 유니코드였는지 바이트열이었는지
+알 방법은 없다.
 
-If the value is changed, the signature will no longer match, and
-unsigning will raise a :exc:`~itsdangerous.exc.BadSignature` exception:
+값이 바뀌면 서명이 더는 일치하지 않게 되고 서명 검증에서
+:exc:`~itsdangerous.exc.BadSignature` 예외를 일으키게 된다.
 
 .. code-block:: python
 
@@ -35,14 +35,14 @@ unsigning will raise a :exc:`~itsdangerous.exc.BadSignature` exception:
       ...
     itsdangerous.exc.BadSignature: Signature "wh6tMHxLgJqB6oY1uT73iMlyrOA" does not match
 
-To record and validate the age of a signature, see :doc:`/timed`.
+서명의 수명을 써넣고 검증하고 싶다면 :doc:`/timed` 를 보라.
 
 .. autoclass:: Signer
     :members:
 
 
-Signing Algorithms
-------------------
+서명 알고리즘
+-------------
 
 .. autoclass:: NoneAlgorithm
 
