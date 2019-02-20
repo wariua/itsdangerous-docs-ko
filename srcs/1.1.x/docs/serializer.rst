@@ -1,14 +1,14 @@
 .. module:: itsdangerous.serializer
 
-Serialization Interface
-=======================
+직렬화 인터페이스
+=================
 
-The :doc:`/signer` only signs strings. To sign other types, the
-:class:`Serializer` class provides a ``dumps``/``loads`` interface
-similar to Python's :mod:`json` module, which serializes the object to a
-string then signs that.
+:doc:`/signer` 는 문자열에만 서명을 한다. 다른 타입에도 서명을
+할 수 있도록 :class:`Serializer` 클래스에는 파이썬 :mod:`json`
+모듈과 비슷한 ``dumps``/``loads`` 인터페이스가 있어서 오브젝트를
+문자열로 직렬화 한 다음 서명을 해 준다.
 
-Use :meth:`~Serializer.dumps` to serialize and sign the data:
+:meth:`~Serializer.dumps` 를 사용해 데이터를 직렬화 하고 서명 한다.
 
 .. code-block:: python
 
@@ -17,47 +17,44 @@ Use :meth:`~Serializer.dumps` to serialize and sign the data:
     s.dumps([1, 2, 3, 4])
     b'[1, 2, 3, 4].r7R9RhGgDPvvWl3iNzLuIIfELmo'
 
-Use :meth:`~Serializer.loads` to verify the signature and deserialize
-the data.
+:meth:`~Serializer.loads` 를 사용해 서명을 검증하고 데이터를
+역직렬화 한다.
 
 .. code-block:: python
 
     s.loads('[1, 2, 3, 4].r7R9RhGgDPvvWl3iNzLuIIfELmo')
     [1, 2, 3, 4]
 
-By default, data is serialized to JSON. If simplejson is installed, it
-is preferred over the built-in :mod:`json` module. This internal
-serializer can be changed by subclassing.
+기본적으로 데이터를 JSON으로 직렬화 한다. simplejson이 설치돼
+있으면 내장 :mod:`json` 모듈 대신 사용한다. 서브클래스를 만들어서
+그 내부 직렬화 모듈을 바꿀 수 있다.
 
-To record and validate the age of the signature, see :doc:`/timed`.
-To serialize to a format that is safe to use in URLs, see
-:doc:`/url_safe`.
+서명의 수명을 기록하고 검증하고 싶다면 :doc:`/timed` 를 보라.
+URL에 쓰기 안전한 형식으로 직렬화 하고 싶다면
+:doc:`/url_safe` 를 보라.
 
 
 .. _the-salt:
 
-The Salt
---------
+솔트
+----
 
-All classes also accept a salt argument. The name might be misleading
-because usually if you think of salts in cryptography you would expect
-the salt to be something that is stored alongside the resulting signed
-string as a way to prevent rainbow table lookups. Such salts are usually
-public.
+모든 클래스들이 솔트 인자도 받는다. 이름이 오해를 유발할 수도 있을
+것 같다. 일반적으로 암호학에서 솔트라고 하면 서명된 결과 문자열과
+함께 저장해서 레인보 테이블 검색을 막는 뭔가를 기대할 것이기
+때문이다. 그런 솔트는 일반적으로 공개된다.
 
-In itsdangerous, like in the original Django implementation, the salt
-serves a different purpose. You could describe it as namespacing. It's
-still not critical if you disclose it because without the secret key it
-does not help an attacker.
+itsdangerous에서는 원래 장고 구현에서처럼 솔트가 다른 역할을 한다.
+일종의 네임스페이스라고 볼 수도 있다. 이 역시 공개돼도 크게 위험하지
+않는데, 비밀키 없이는 공격자에게 도움이 안 되기 때문이다.
 
-Let's assume that you have two links you want to sign. You have the
-activation link on your system which can activate a user account and you
-have an upgrade link that can upgrade a user's account to a paid account
-which you send out via email. If in both cases all you sign is the user
-ID a user could reuse the variable part in the URL from the activation
-link to upgrade the account. Now you could either put more information
-in there which you sign (like the intention: upgrade or activate), but
-you could also use different salts:
+서명하려는 링크가 두 개 있다고 해 보자. 시스템 상에서 사용자 계정을
+활성화할 수 있는 활성화 링크가 있고 사용자의 계정을 유료 계정으로
+업그레이드 할 수 있는 업그레이드 링크가 있어서 이메일을 통해 보낸다.
+두 경우 모두 사용자 ID에만 서명을 한다면 어느 사용자가 활성 링크
+URL의 변수 부분을 재사용해서 계정을 업그레이드 할 수도 있을 것이다.
+이 경우 더 많은 정보(가령 용도, 업그레이드 또는 활성)를 서명 대상에
+포함시킬 수도 있겠지만 다른 솔트를 쓰는 방법도 가능하다.
 
 .. code-block:: python
 
@@ -69,8 +66,8 @@ you could also use different salts:
     s2.dumps(42)
     'NDI.c0MpsD6gzpilOAeUPra3NShPXsE'
 
-The second serializer can't load data dumped with the first because the
-salts differ:
+첫 번째 serializer가 내놓은 데이터를 두 번째 serializer로 받을 수
+없다. 솔트가 다르기 때문이다.
 
 .. code-block:: python
 
@@ -79,7 +76,7 @@ salts differ:
       ...
     itsdangerous.exc.BadSignature: Signature "MHQqszw6Wc81wOBQszCrEE_RlzY" does not match
 
-Only the serializer with the same salt can load the data:
+솔트가 같은 serializer로만 데이터를 받을 수 있다.
 
 .. code-block:: python
 
@@ -87,13 +84,13 @@ Only the serializer with the same salt can load the data:
     42
 
 
-Responding to Failure
----------------------
+실패 대응
+---------
 
-Exceptions have helpful attributes which allow you to inspect the
-payload if the signature check failed. This has to be done with extra
-care because at that point you know that someone tampered with your data
-but it might be useful for debugging purposes.
+예외에는 유용한 속성들이 있어서 서명 검사가 실패한 경우 페이로드를
+살펴볼 수 있다. 그 경우 특별히 주의할 필요가 있는데 그 지점으로
+갔다는 건 누군가 데이터를 조작했다는 뜻이기 때문이다. 디버깅 용도에
+유용할 수도 있다.
 
 .. code-block:: python
 
@@ -105,27 +102,26 @@ but it might be useful for debugging purposes.
 
     try:
         decoded_payload = s.loads(data)
-        # This payload is decoded and safe
+        # 페이로드를 디코딩 했으며 안전함
     except BadSignature as e:
         if e.payload is not None:
             try:
                 decoded_payload = s.load_payload(e.payload)
             except BadData:
                 pass
-            # This payload is decoded but unsafe because someone
-            # tampered with the signature. The decode (load_payload)
-            # step is explicit because it might be unsafe to unserialize
-            # the payload (think pickle instead of json!)
+            # 페이로드를 디코딩 했지만 누군가 서명을 조작했으므로
+            # 안전하지 않음. 명시적으로 디코딩(load_payload) 단계가
+            # 있는 건 페이로드를 역직렬화 하는 게 안전하지 않을 수도
+            # 있기 때문임. (json이 아니라 pickle이라고 생각해 보라!)
 
-If you don't want to inspect attributes to figure out what exactly went
-wrong you can also use :meth:`~Serializer.loads_unsafe`:
+속성을 들여다봐서 정확히 뭐가 잘못됐는지 알아내려는 게 아니라면
+:meth:`~Serializer.loads_unsafe` 를 쓸 수도 있다.
 
 .. code-block:: python
 
     sig_okay, payload = s.loads_unsafe(data)
 
-The first item in the returned tuple is a boolean that indicates if the
-signature was correct.
+반환되는 튜플의 첫 번째 항목이 서명이 올바른지 나타내는 불리언이다.
 
 API
 ---
