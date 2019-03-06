@@ -41,7 +41,7 @@
     :members:
 
 
-서명 알고리즘
+서명 알고리듬
 -------------
 
 .. autoclass:: NoneAlgorithm
