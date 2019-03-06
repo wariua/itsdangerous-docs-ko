@@ -1,11 +1,11 @@
 .. module:: itsdangerous.url_safe
 
-URL Safe Serialization
-======================
+URL에 안전한 직렬화
+===================
 
-Often it is helpful if you can pass these trusted strings in places
-where you only have a limited set of characters available. Because of
-this, itsdangerous also provides URL safe serializers:
+이런 신뢰하는 문자열을 제한된 문자들만 쓸 수 있는 곳으로 보낼 수
+있으면 좋을 때가 많이 있다. 그래서 itsdagerous에서는 URL에 안전한
+serializer를 함께 제공한다.
 
 .. code-block:: python
 
