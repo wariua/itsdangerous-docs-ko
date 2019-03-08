@@ -1,7 +1,7 @@
 .. module:: itsdangerous.encoding
 
-Encoding Utilities
-==================
+인코딩 유틸리티
+===============
 
 .. autofunction:: base64_encode
 
