@@ -1,1 +1,1 @@
-builds/1.1.x/html
+srcs/1.1.x/docs/_build/html
