@@ -29,9 +29,9 @@
 있으면 내장 :mod:`json` 모듈 대신 사용한다. 서브클래스를 만들어서
 그 내부 직렬화 모듈을 바꿀 수 있다.
 
-서명의 유효 기간을 기록하고 검증하고 싶다면 :doc:`/timed` 를 보라.
-URL에 쓰기 안전한 형식으로 직렬화 하고 싶다면
-:doc:`/url_safe` 를 보라.
+서명의 유효 기간을 기록하고 검증하고 싶다면 :doc:`/timed` 절을
+보라. URL에 쓰기 안전한 형식으로 직렬화 하고 싶다면
+:doc:`/url_safe` 절을 보라.
 
 
 .. _the-salt:
@@ -66,7 +66,7 @@ URL의 변수 부분을 재사용해서 계정을 업그레이드 할 수도 있
     s2.dumps(42)
     'NDI.c0MpsD6gzpilOAeUPra3NShPXsE'
 
-첫 번째 serializer가 내놓은 데이터를 두 번째 serializer로 받을 수
+첫 번째 직렬화 객체가 내놓은 데이터를 두 번째 직렬화 객체로 받을 수
 없다. 솔트가 다르기 때문이다.
 
 .. code-block:: python
@@ -76,7 +76,7 @@ URL의 변수 부분을 재사용해서 계정을 업그레이드 할 수도 있
       ...
     itsdangerous.exc.BadSignature: Signature "MHQqszw6Wc81wOBQszCrEE_RlzY" does not match
 
-솔트가 같은 serializer로만 데이터를 받을 수 있다.
+솔트가 같은 직렬화 객체로만 데이터를 받을 수 있다.
 
 .. code-block:: python
 
@@ -112,7 +112,7 @@ URL의 변수 부분을 재사용해서 계정을 업그레이드 할 수도 있
             # 페이로드를 디코딩 했지만 누군가 서명을 조작했으므로
             # 안전하지 않음. 명시적으로 디코딩(load_payload) 단계가
             # 있는 건 페이로드를 역직렬화 하는 게 안전하지 않을 수도
-            # 있기 때문임. (json이 아니라 pickle이라고 생각해 보라!)
+            # 있기 때문. (json이 아니라 pickle이라고 생각해 보라!)
 
 속성을 들여다봐서 정확히 뭐가 잘못됐는지 알아내려는 게 아니라면
 :meth:`~Serializer.loads_unsafe` 를 쓸 수도 있다.

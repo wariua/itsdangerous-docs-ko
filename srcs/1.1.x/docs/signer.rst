@@ -35,7 +35,7 @@
       ...
     itsdangerous.exc.BadSignature: Signature "wh6tMHxLgJqB6oY1uT73iMlyrOA" does not match
 
-서명 유효 기간을 써넣고 검증하고 싶다면 :doc:`/timed` 를 보라.
+서명 유효 기간을 써넣고 검증하고 싶다면 :doc:`/timed` 절을 보라.
 
 .. autoclass:: Signer
     :members:
