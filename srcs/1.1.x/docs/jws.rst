@@ -5,7 +5,7 @@ JSON 웹 서명 (JWS)
 
 JSON 웹 서명(JWS)은 앞서 본 URL 안전 serializer와 비슷하게
 동작하되 `draft-ietf-jose-json-web-signature <http://self-issued.info/
-docs/draft-ietf-jose-json-web-signature.html>`_ 에 따라 헤더를
+docs/draft-ietf-jose-json-web-signature.html>`_\에 따라 헤더를
 찍는다.
 
 .. code-block:: python
@@ -16,7 +16,7 @@ docs/draft-ietf-jose-json-web-signature.html>`_ 에 따라 헤더를
     'eyJhbGciOiJIUzI1NiJ9.eyJ4Ijo0Mn0.ZdTn1YyGz9Yx5B5wNpWRL221G1WpVE5fPCPKNuc6UAo'
 
 값을 다시 받을 때 다른 serializer들과 마찬가지로 기본적으로 헤더가
-반환되지 않는다. 하지만 ``return_header=True`` 를 줘서 헤더를
+반환되지 않는다. 하지만 ``return_header=True``\를 줘서 헤더를
 요청할 수도 있다. 직렬화 때 자체적인 헤더 필드를 제공할 수 있다.
 
 .. code-block:: python

@@ -3,12 +3,12 @@
 직렬화 인터페이스
 =================
 
-:doc:`/signer` 는 문자열에만 서명을 한다. 다른 타입에도 서명을
+:doc:`/signer`\는 문자열에만 서명을 한다. 다른 타입에도 서명을
 할 수 있도록 :class:`Serializer` 클래스에는 파이썬 :mod:`json`
 모듈과 비슷한 ``dumps``/``loads`` 인터페이스가 있어서 오브젝트를
 문자열로 직렬화 한 다음 서명을 해 준다.
 
-:meth:`~Serializer.dumps` 를 사용해 데이터를 직렬화 하고 서명 한다.
+:meth:`~Serializer.dumps`\를 사용해 데이터를 직렬화 하고 서명 한다.
 
 .. code-block:: python
 
@@ -115,7 +115,7 @@ URL의 변수 부분을 재사용해서 계정을 업그레이드 할 수도 있
             # 있기 때문. (json이 아니라 pickle이라고 생각해 보라!)
 
 속성을 들여다봐서 정확히 뭐가 잘못됐는지 알아내려는 게 아니라면
-:meth:`~Serializer.loads_unsafe` 를 쓸 수도 있다.
+:meth:`~Serializer.loads_unsafe`\를 쓸 수도 있다.
 
 .. code-block:: python
 

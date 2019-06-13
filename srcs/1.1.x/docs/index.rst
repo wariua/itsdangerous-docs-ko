@@ -19,7 +19,7 @@ itsdangerous
 
 내부적으로 itsdangerous는 서명에 기본적으로 HMAC과 SHA-512를 쓴다.
 처음 구현은 `장고의 서명 모듈
-<https://docs.djangoproject.com/en/dev/topics/signing/>`_ 에서
+<https://docs.djangoproject.com/en/dev/topics/signing/>`_\에서
 영감을 얻었다. JSON 웹 서명(JWS)도 지원한다. BSD 라이선스에 따라
 쓸 수 있다.
 
@@ -27,7 +27,7 @@ itsdangerous
 설치
 ----
 
-`pip`_ 로 설치하고 업데이트 하면 된다.
+`pip`_\로 설치하고 업데이트 하면 된다.
 
 .. code-block:: text
 
