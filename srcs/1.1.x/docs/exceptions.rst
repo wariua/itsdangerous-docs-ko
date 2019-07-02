@@ -1,7 +1,7 @@
 .. module:: itsdangerous.exc
 
-Exceptions
-==========
+예외
+====
 
 .. autoexception:: BadData
     :members:
