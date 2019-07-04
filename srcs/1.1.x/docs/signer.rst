@@ -25,8 +25,8 @@
 하지만 서명 검증 후에 그 문자열이 유니코드였는지 바이트열이었는지
 알 방법은 없다.
 
-값이 바뀌면 서명이 더는 일치하지 않게 되고 서명 검증에서
-:exc:`~itsdangerous.exc.BadSignature` 예외를 일으키게 된다.
+값이 바뀌면 서명이 더는 일치하지 않게 되고 서명 검증 과정에서
+:exc:`~itsdangerous.exc.BadSignature` 예외를 던지게 된다.
 
 .. code-block:: python
 
