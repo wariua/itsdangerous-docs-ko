@@ -26,8 +26,8 @@ class SigningAlgorithm(object):
 
 
 class NoneAlgorithm(SigningAlgorithm):
-    """Provides an algorithm that does not perform any signing and
-    returns an empty signature.
+    """어떤 서명도 수행하지 않고 빈 서명을 반환하는 알고리듬을
+    제공한다.
     """
 
     def get_signature(self, key, value):
@@ -35,7 +35,7 @@ class NoneAlgorithm(SigningAlgorithm):
 
 
 class HMACAlgorithm(SigningAlgorithm):
-    """Provides signature generation using HMACs."""
+    """HMAC을 이용하는 서명 생성 방식을 제공한다."""
 
     #: The digest method to use with the MAC algorithm. This defaults to
     #: SHA1, but can be changed to any other function in the hashlib
@@ -53,37 +53,34 @@ class HMACAlgorithm(SigningAlgorithm):
 
 
 class Signer(object):
-    """This class can sign and unsign bytes, validating the signature
-    provided.
+    """이 클래스로 바이트들에 서명을 하거나 받은 서명을 검증할
+    수 있다.
 
-    Salt can be used to namespace the hash, so that a signed string is
-    only valid for a given namespace. Leaving this at the default value
-    or re-using a salt value across different parts of your application
-    where the same signed value in one part can mean something different
-    in another part is a security risk.
+    솔트를 사용해 일종의 해시 네임스페이스를 만들어서 서명된 문자열이
+    해당 네임스페이스에서만 유효하게 할 수 있다. 솔트를 기본값 그대로
+    두거나 응용의 한 부분에서 서명한 값이 다른 부분에서 어떤 의미가
+    있을 때 두 곳에서 같은 솔트 값을 재사용하는 건 보안 위험 요소다.
 
-    See :ref:`the-salt` for an example of what the salt is doing and how
-    you can utilize it.
+    솔트의 역할이 뭐고 어떻게 활용할 수 있는지에 대한 예시는
+    :ref:`the-salt` 참고.
 
     .. versionadded:: 0.14
-        ``key_derivation`` and ``digest_method`` were added as arguments
-        to the class constructor.
+        클래스 생성자 인자로 ``key_derivation`` 및
+        ``digest_method`` 추가됨.
 
     .. versionadded:: 0.18
-        ``algorithm`` was added as an argument to the class constructor.
+        클래스 생성자 인자로 ``algorithm`` 추가됨.
     """
 
-    #: The digest method to use for the signer.  This defaults to
-    #: SHA1 but can be changed to any other function in the hashlib
-    #: module.
+    #: 서명에 사용할 다이제스트 메소드. 기본은 SHA1이지만
+    #: hashlib 모듈의 다른 함수로 바꿀 수 있다.
     #:
     #: .. versionadded:: 0.14
     default_digest_method = staticmethod(hashlib.sha1)
 
-    #: Controls how the key is derived. The default is Django-style
-    #: concatenation. Possible values are ``concat``, ``django-concat``
-    #: and ``hmac``. This is used for deriving a key from the secret key
-    #: with an added salt.
+    #: 키 유도 방식을 지정. 기본은 장고 스타일 접합이다.
+    #: 가능한 값으로 ``concat``, ``django-concat``, ``hmac``\이
+    #: 있다. 비밀키에 솔트를 추가해서 키를 유도하는 데 쓰인다.
     #:
     #: .. versionadded:: 0.14
     default_key_derivation = "django-concat"
@@ -117,11 +114,10 @@ class Signer(object):
         self.algorithm = algorithm
 
     def derive_key(self):
-        """This method is called to derive the key. The default key
-        derivation choices can be overridden here. Key derivation is not
-        intended to be used as a security method to make a complex key
-        out of a short password. Instead you should use large random
-        secret keys.
+        """이 메소드를 호출해서 키를 유도한다. 여기의 기본 키 유도
+        방식을 바꿀 수 있다. 키 유도는 짧은 패스워드로 복잡한 키를
+        만드는 보안 수단이 아니다. 보안을 위해선 긴 난수 비밀키를
+        사용해야 한다.
         """
         salt = want_bytes(self.salt)
         if self.key_derivation == "concat":
@@ -138,18 +134,18 @@ class Signer(object):
             raise TypeError("Unknown key derivation method")
 
     def get_signature(self, value):
-        """Returns the signature for the given value."""
+        """값을 받아서 서명을 반환한다."""
         value = want_bytes(value)
         key = self.derive_key()
         sig = self.algorithm.get_signature(key, value)
         return base64_encode(sig)
 
     def sign(self, value):
-        """Signs the given string."""
+        """문자열을 받아서 서명을 한다."""
         return want_bytes(value) + want_bytes(self.sep) + self.get_signature(value)
 
     def verify_signature(self, value, sig):
-        """Verifies the signature for the given value."""
+        """값을 받아서 서명을 검증한다."""
         key = self.derive_key()
         try:
             sig = base64_decode(sig)
@@ -158,7 +154,7 @@ class Signer(object):
         return self.algorithm.verify_signature(key, value, sig)
 
     def unsign(self, signed_value):
-        """Unsigns the given string."""
+        """문자열을 받아서 검증하고 서명을 없앤다."""
         signed_value = want_bytes(signed_value)
         sep = want_bytes(self.sep)
         if sep not in signed_value:
@@ -169,8 +165,8 @@ class Signer(object):
         raise BadSignature("Signature %r does not match" % sig, payload=value)
 
     def validate(self, signed_value):
-        """Only validates the given signed value. Returns ``True`` if
-        the signature exists and is valid.
+        """서명된 값을 받아서 검증만 한다. 서명이 존재하고 유효하면
+        ``True``\를 반환한다.
         """
         try:
             self.unsign(signed_value)
