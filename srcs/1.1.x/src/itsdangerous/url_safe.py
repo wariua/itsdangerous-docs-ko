@@ -52,14 +52,14 @@ class URLSafeSerializerMixin(object):
 
 
 class URLSafeSerializer(URLSafeSerializerMixin, Serializer):
-    """Works like :class:`.Serializer` but dumps and loads into a URL
-    safe string consisting of the upper and lowercase character of the
-    alphabet as well as ``'_'``, ``'-'`` and ``'.'``.
+    """:class:`.Serializer`\처럼 동작하되 알파벳 대소문자와
+    ``'_'``, ``'-'``, ``'.'``\로 이뤄진 URL 안전 문자열을
+    덤프 및 적재한다.
     """
 
 
 class URLSafeTimedSerializer(URLSafeSerializerMixin, TimedSerializer):
-    """Works like :class:`.TimedSerializer` but dumps and loads into a
-    URL safe string consisting of the upper and lowercase character of
-    the alphabet as well as ``'_'``, ``'-'`` and ``'.'``.
+    """:class:`.TimedSerializer`\처럼 동작하되 알파벳 대소문자와
+    ``'_'``, ``'-'``, ``'.'``\로 이뤄진 URL 안전 문자열을
+    덤프 및 적재한다.
     """
