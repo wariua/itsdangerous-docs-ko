@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JSON 웹 서명 (JWS) &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="인코딩 유틸리티" href="encoding.html" />
+    <link rel="prev" title="URL에 안전한 직렬화" href="url_safe.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="encoding.html" title="인코딩 유틸리티"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="url_safe.html" title="URL에 안전한 직렬화"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-itsdangerous.jws"></span><div class="section" id="json-jws">
+<h1>JSON 웹 서명 (JWS)<a class="headerlink" href="#json-jws" title="Permalink to this headline">¶</a></h1>
+<p>JSON 웹 서명(JWS)은 앞서 본 URL 안전 직렬화와 비슷하게
+동작하되 <a class="reference external" href="http://self-issued.info/docs/draft-ietf-jose-json-web-signature.html">draft-ietf-jose-json-web-signature</a>에 따라 헤더를
+내놓는다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="kn">import</span> <span class="n">JSONWebSignatureSerializer</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">JSONWebSignatureSerializer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">})</span>
+<span class="s1">&#39;eyJhbGciOiJIUzI1NiJ9.eyJ4Ijo0Mn0.ZdTn1YyGz9Yx5B5wNpWRL221G1WpVE5fPCPKNuc6UAo&#39;</span>
+</pre></div>
+</div>
+<p>값을 다시 받을 때 다른 직렬화와 마찬가지로 기본적으로 헤더가
+반환되지 않는다. 하지만 <code class="docutils literal notranslate"><span class="pre">return_header=True</span></code>를 줘서 헤더를
+요청할 수도 있다. 직렬화 때 자체적인 헤더 필드를 제공할 수 있다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">header_fields</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="s1">&#39;eyJhbGciOiJIUzI1NiIsInYiOjF9.MA.wT-RZI9YU06R919VBdAfTLn82_iIQD70J_j-3F4z_aM&#39;</span>
+<span class="n">s</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+    <span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInYiOjF9&quot;</span>
+    <span class="s2">&quot;.MA.wT-RZI9YU06R919VBdAfTLn82_iIQD70J_j-3F4z_aM&quot;</span>
+<span class="p">)</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;alg&#39;</span><span class="p">:</span> <span class="s1">&#39;HS256&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>현재 itsdangerous에서는 HMAC SHA 파생 알고리듬과 none 알고리듬만
+제공하고 ECC 기반 알고리듬을 지원하지 않는다. 헤더의 알고리듬을
+직렬화의 알고리듬과 비교해서 불일치 시
+<a class="reference internal" href="exceptions.html#itsdangerous.exc.BadSignature" title="itsdangerous.exc.BadSignature"><code class="xref py py-exc docutils literal notranslate"><span class="pre">BadSignature</span></code></a> 예외를 던진다.</p>
+<dl class="class">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer">
+<em class="property">class </em><code class="descclassname">itsdangerous.jws.</code><code class="descname">JSONWebSignatureSerializer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=None</em>, <em>serializer=None</em>, <em>serializer_kwargs=None</em>, <em>signer=None</em>, <em>signer_kwargs=None</em>, <em>algorithm_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>이 직렬화 모듈에선 JSON 웹 서명(JWS) 지원을 구현하고 있다.
+JWS Compact Serialization만 지원한다.</p>
+<dl class="attribute">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.default_algorithm">
+<code class="descname">default_algorithm</code><em class="property"> = 'HS512'</em><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.default_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>서명 생성에 사용할 기본 알고리듬</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.default_serializer">
+<code class="descname">default_serializer</code><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.default_serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">itsdangerous._json._CompactJSON</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.dump_payload">
+<code class="descname">dump_payload</code><span class="sig-paren">(</span><em>header</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.dump_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>인코딩 된 객체를 덤프 한다. 반환 값은 항상 bytes다.
+내부 직렬화 모듈에서 텍스트를 반환하면 UTF-8으로
+인코딩 된다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.dumps">
+<code class="descname">dumps</code><span class="sig-paren">(</span><em>obj</em>, <em>salt=None</em>, <em>header_fields=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="serializer.html#itsdangerous.serializer.Serializer.dumps" title="itsdangerous.serializer.Serializer.dumps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Serializer.dumps()</span></code></a>와 비슷하되 JSON 웹 서명을
+만들어 낸다. JWS 헤더에 추가로 포함시킬 필드를 지정하는 것도
+가능하다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.load_payload">
+<code class="descname">load_payload</code><span class="sig-paren">(</span><em>payload</em>, <em>serializer=None</em>, <em>return_header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.load_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>인코딩 된 객체를 적재한다. 페이로드가 유효하지 않으면
+함수에서 <a class="reference internal" href="exceptions.html#itsdangerous.exc.BadPayload" title="itsdangerous.exc.BadPayload"><code class="xref py py-class docutils literal notranslate"><span class="pre">BadPayload</span></code></a>를 던진다. <code class="docutils literal notranslate"><span class="pre">serializer</span></code>
+매개변수를 이용하면 클래스에 저장된 것과 다른 직렬화
+방식을 쓸 수 있다. 인코딩 된 <code class="docutils literal notranslate"><span class="pre">payload</span></code>는 항상
+bytes여야 한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.loads">
+<code class="descname">loads</code><span class="sig-paren">(</span><em>s</em>, <em>salt=None</em>, <em>return_header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.jws.JSONWebSignatureSerializer.dumps" title="itsdangerous.jws.JSONWebSignatureSerializer.dumps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code></a>의 반대. <code class="docutils literal notranslate"><span class="pre">return_header</span></code>를 설정해
+요청하면 페이로드와 헤더로 된 튜플을 반환한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.loads_unsafe">
+<code class="descname">loads_unsafe</code><span class="sig-paren">(</span><em>s</em>, <em>salt=None</em>, <em>return_header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.loads_unsafe" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.jws.JSONWebSignatureSerializer.loads" title="itsdangerous.jws.JSONWebSignatureSerializer.loads"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads()</span></code></a>와 비슷하되 서명 검증이 빠져 있다.
+직렬화 모듈 동작 방식에 따라선 아주 위험한 동작일 수도
+있다. 반환 값이 단순 페이로드가 아니라 <code class="docutils literal notranslate"><span class="pre">(signature_valid,</span>
+<span class="pre">payload)</span></code>다. 첫 항목은 서명이 유효한지 여부를 나타내는
+불리언이다. 이 함수는 절대 실패하지 않는다.</p>
+<p>디버깅용으로만, 그리고 직렬화 모듈에 취약성이 없다는 게
+확실할 때만 써야 한다. (예를 들어 pickle 직렬화 모듈에는
+쓰지 말아야 한다.)</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.15.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.jws.JSONWebSignatureSerializer.make_signer">
+<code class="descname">make_signer</code><span class="sig-paren">(</span><em>salt=None</em>, <em>algorithm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.JSONWebSignatureSerializer.make_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p>사용할 signer 인스턴스를 새로 만든다. 기본 구현에서는
+기반 클래스 <a class="reference internal" href="signer.html#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Signer</span></code></a>를 쓴다.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="itsdangerous.jws.TimedJSONWebSignatureSerializer">
+<em class="property">class </em><code class="descclassname">itsdangerous.jws.</code><code class="descname">TimedJSONWebSignatureSerializer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>expires_in=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.TimedJSONWebSignatureSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>기본 <a class="reference internal" href="#itsdangerous.jws.JSONWebSignatureSerializer" title="itsdangerous.jws.JSONWebSignatureSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONWebSignatureSerializer</span></code></a>처럼 동작하되
+서명 시간까지 기록하므로 서명이 만료되게 할 수 있다.</p>
+<p>JWS에서는 현재 이런 동작을 명세하고 있지 않지만 이런 확장이
+가능하다고 명세에서 언급하고 있다. <a class="reference external" href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#expDef">draft-ietf-oauth-json
+-web-token</a>에 명세된 것과 비슷한 방식으로
+만료 날짜를 헤더에 인코딩 한다.</p>
+<dl class="method">
+<dt id="itsdangerous.jws.TimedJSONWebSignatureSerializer.loads">
+<code class="descname">loads</code><span class="sig-paren">(</span><em>s</em>, <em>salt=None</em>, <em>return_header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.jws.TimedJSONWebSignatureSerializer.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code>의 반대. <code class="docutils literal notranslate"><span class="pre">return_header</span></code>를 설정해
+요청하면 페이로드와 헤더로 된 튜플을 반환한다.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/itsdangerous-logo-sidebar.png" alt="Logo"/>
+            </a></p>
+  
+<h3>Navigation</h3>
+<ul>
+  <li><a href="index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="url_safe.html" title="previous chapter">URL에 안전한 직렬화</a>
+          <li>Next: <a href="encoding.html" title="next chapter">인코딩 유틸리티</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>

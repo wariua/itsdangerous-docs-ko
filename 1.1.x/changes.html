@@ -1,0 +1,290 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>변경 사항 &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="라이선스" href="license.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="라이선스"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>변경 사항<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-1-0">
+<h2>Version 1.1.0<a class="headerlink" href="#version-1-1-0" title="Permalink to this headline">¶</a></h2>
+<p>Released 2018-10-26</p>
+<ul class="simple">
+<li>Change default signing algorithm back to SHA-1. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/113">#113</a>)</li>
+<li>Added a default SHA-512 fallback for users who used the yanked 1.0.0
+release which defaulted to SHA-512. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/114">#114</a>)</li>
+<li>Add support for fallback algorithms during deserialization to
+support changing the default in the future without breaking existing
+signatures. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/113">#113</a>)</li>
+<li>Changed capitalization of packages back to lowercase as the change
+in capitalization broke some tooling. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/113">#113</a>)</li>
+</ul>
+</div>
+<div class="section" id="version-1-0-0">
+<h2>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Permalink to this headline">¶</a></h2>
+<p>Released 2018-10-18</p>
+<p>YANKED</p>
+<p><em>Note</em>: This release was yanked from PyPI because it changed the default
+algorithm to SHA-512. This decision was reverted in 1.1.0 and it remains
+at SHA1.</p>
+<ul class="simple">
+<li>Drop support for Python 2.6 and 3.3.</li>
+<li>Refactor code from a single module to a package. Any object in the
+API docs is still importable from the top-level <code class="docutils literal notranslate"><span class="pre">itsdangerous</span></code>
+name, but other imports will need to be changed. A future release
+will remove many of these compatibility imports. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/107">#107</a>)</li>
+<li>Optimize how timestamps are serialized and deserialized. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/13">#13</a>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">base64_decode</span></code> raises <code class="docutils literal notranslate"><span class="pre">BadData</span></code> when it is passed invalid data.
+(<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/27">#27</a>)</li>
+<li>Ensure value is bytes when signing to avoid a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> on
+Python 3. (<a class="reference external" href="https://github.com/pallets/itsdangerous/issues/29">#29</a>)</li>
+<li>Add a <code class="docutils literal notranslate"><span class="pre">serializer_kwargs</span></code> argument to <code class="docutils literal notranslate"><span class="pre">Serializer</span></code>, which is
+passed to <code class="docutils literal notranslate"><span class="pre">dumps</span></code> during <code class="docutils literal notranslate"><span class="pre">dump_payload</span></code>. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/36">#36</a>)</li>
+<li>More compact JSON dumps for unicode strings. (<a class="reference external" href="https://github.com/pallets/itsdangerous/issues/38">#38</a>)</li>
+<li>Use the full timestamp rather than an offset, allowing dates before
+2011. (<a class="reference external" href="https://github.com/pallets/itsdangerous/issues/46">#46</a>)</li>
+<li>Detect a <code class="docutils literal notranslate"><span class="pre">sep</span></code> character that may show up in the signature itself
+and raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. (<a class="reference external" href="https://github.com/pallets/itsdangerous/issues/62">#62</a>)</li>
+<li>Use a consistent signature for keyword arguments for
+<code class="docutils literal notranslate"><span class="pre">Serializer.load_payload</span></code> in subclasses. (<a class="reference external" href="https://github.com/pallets/itsdangerous/issues/74">#74</a>, <a class="reference external" href="https://github.com/pallets/itsdangerous/pull/75">#75</a>)</li>
+<li>Change default intermediate hash from SHA-1 to SHA-512. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/80">#80</a>)</li>
+<li>Convert JWS exp header to an int when loading. (<a class="reference external" href="https://github.com/pallets/itsdangerous/pull/99">#99</a>)</li>
+</ul>
+</div>
+<div class="section" id="version-0-24">
+<h2>Version 0.24<a class="headerlink" href="#version-0-24" title="Permalink to this headline">¶</a></h2>
+<p>Released 2014-03-28</p>
+<ul class="simple">
+<li>Added a <code class="docutils literal notranslate"><span class="pre">BadHeader</span></code> exception that is used for bad headers that
+replaces the old <code class="docutils literal notranslate"><span class="pre">BadPayload</span></code> exception that was reused in those
+cases.</li>
+</ul>
+</div>
+<div class="section" id="version-0-23">
+<h2>Version 0.23<a class="headerlink" href="#version-0-23" title="Permalink to this headline">¶</a></h2>
+<p>Released 2013-08-08</p>
+<ul class="simple">
+<li>Fixed a packaging mistake that caused the tests and license files to
+not be included.</li>
+</ul>
+</div>
+<div class="section" id="version-0-22">
+<h2>Version 0.22<a class="headerlink" href="#version-0-22" title="Permalink to this headline">¶</a></h2>
+<p>Released 2013-07-03</p>
+<ul class="simple">
+<li>Added support for <code class="docutils literal notranslate"><span class="pre">TimedJSONWebSignatureSerializer</span></code>.</li>
+<li>Made it possible to override the signature verification function to
+allow implementing asymmetrical algorithms.</li>
+</ul>
+</div>
+<div class="section" id="version-0-21">
+<h2>Version 0.21<a class="headerlink" href="#version-0-21" title="Permalink to this headline">¶</a></h2>
+<p>Released 2013-05-26</p>
+<ul class="simple">
+<li>Fixed an issue on Python 3 which caused invalid errors to be
+generated.</li>
+</ul>
+</div>
+<div class="section" id="version-0-20">
+<h2>Version 0.20<a class="headerlink" href="#version-0-20" title="Permalink to this headline">¶</a></h2>
+<p>Released 2013-05-23</p>
+<ul class="simple">
+<li>Fixed an incorrect call into <code class="docutils literal notranslate"><span class="pre">want_bytes</span></code> that broke some uses of
+itsdangerous on Python 2.6.</li>
+</ul>
+</div>
+<div class="section" id="version-0-19">
+<h2>Version 0.19<a class="headerlink" href="#version-0-19" title="Permalink to this headline">¶</a></h2>
+<p>Released 2013-05-21</p>
+<ul class="simple">
+<li>Dropped support for 2.5 and added support for 3.3.</li>
+</ul>
+</div>
+<div class="section" id="version-0-18">
+<h2>Version 0.18<a class="headerlink" href="#version-0-18" title="Permalink to this headline">¶</a></h2>
+<p>Released 2013-05-03</p>
+<ul class="simple">
+<li>Added support for JSON Web Signatures (JWS).</li>
+</ul>
+</div>
+<div class="section" id="version-0-17">
+<h2>Version 0.17<a class="headerlink" href="#version-0-17" title="Permalink to this headline">¶</a></h2>
+<p>Released 2012-08-10</p>
+<ul class="simple">
+<li>Fixed a name error when overriding the digest method.</li>
+</ul>
+</div>
+<div class="section" id="version-0-16">
+<h2>Version 0.16<a class="headerlink" href="#version-0-16" title="Permalink to this headline">¶</a></h2>
+<p>Released 2012-07-11</p>
+<ul class="simple">
+<li>Made it possible to pass unicode values to <code class="docutils literal notranslate"><span class="pre">load_payload</span></code> to make
+it easier to debug certain things.</li>
+</ul>
+</div>
+<div class="section" id="version-0-15">
+<h2>Version 0.15<a class="headerlink" href="#version-0-15" title="Permalink to this headline">¶</a></h2>
+<p>Released 2012-07-11</p>
+<ul class="simple">
+<li>Made standalone <code class="docutils literal notranslate"><span class="pre">load_payload</span></code> more robust by raising one specific
+error if something goes wrong.</li>
+<li>Refactored exceptions to catch more cases individually, added more
+attributes.</li>
+<li>Fixed an issue that caused <code class="docutils literal notranslate"><span class="pre">load_payload</span></code> not work in some
+situations with timestamp based serializers</li>
+<li>Added an <code class="docutils literal notranslate"><span class="pre">loads_unsafe</span></code> method.</li>
+</ul>
+</div>
+<div class="section" id="version-0-14">
+<h2>Version 0.14<a class="headerlink" href="#version-0-14" title="Permalink to this headline">¶</a></h2>
+<p>Released 2012-06-29</p>
+<ul class="simple">
+<li>API refactoring to support different key derivations.</li>
+<li>Added attributes to exceptions so that you can inspect the data even
+if the signature check failed.</li>
+</ul>
+</div>
+<div class="section" id="version-0-13">
+<h2>Version 0.13<a class="headerlink" href="#version-0-13" title="Permalink to this headline">¶</a></h2>
+<p>Released 2012-06-10</p>
+<ul class="simple">
+<li>Small API change that enables customization of the digest module.</li>
+</ul>
+</div>
+<div class="section" id="version-0-12">
+<h2>Version 0.12<a class="headerlink" href="#version-0-12" title="Permalink to this headline">¶</a></h2>
+<p>Released 2012-02-22</p>
+<ul class="simple">
+<li>Fixed a problem with the local timezone being used for the epoch
+calculation. This might invalidate some of your signatures if you
+were not running in UTC timezone. You can revert to the old behavior
+by monkey patching <code class="docutils literal notranslate"><span class="pre">itsdangerous.EPOCH</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="version-0-11">
+<h2>Version 0.11<a class="headerlink" href="#version-0-11" title="Permalink to this headline">¶</a></h2>
+<p>Released 2011-07-07</p>
+<ul class="simple">
+<li>Fixed an uncaught value error.</li>
+</ul>
+</div>
+<div class="section" id="version-0-10">
+<h2>Version 0.10<a class="headerlink" href="#version-0-10" title="Permalink to this headline">¶</a></h2>
+<p>Released 2011-06-25</p>
+<ul class="simple">
+<li>Refactored interface that the underlying serializers can be swapped
+by passing in a module instead of having to override the payload
+loaders and dumpers. This makes the interface more compatible with
+Django’s recent changes.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/itsdangerous-logo-sidebar.png" alt="Logo"/>
+            </a></p>
+  
+
+  <h3>Contents</h3>
+  <ul>
+<li><a class="reference internal" href="#">변경 사항</a><ul>
+<li><a class="reference internal" href="#version-1-1-0">Version 1.1.0</a></li>
+<li><a class="reference internal" href="#version-1-0-0">Version 1.0.0</a></li>
+<li><a class="reference internal" href="#version-0-24">Version 0.24</a></li>
+<li><a class="reference internal" href="#version-0-23">Version 0.23</a></li>
+<li><a class="reference internal" href="#version-0-22">Version 0.22</a></li>
+<li><a class="reference internal" href="#version-0-21">Version 0.21</a></li>
+<li><a class="reference internal" href="#version-0-20">Version 0.20</a></li>
+<li><a class="reference internal" href="#version-0-19">Version 0.19</a></li>
+<li><a class="reference internal" href="#version-0-18">Version 0.18</a></li>
+<li><a class="reference internal" href="#version-0-17">Version 0.17</a></li>
+<li><a class="reference internal" href="#version-0-16">Version 0.16</a></li>
+<li><a class="reference internal" href="#version-0-15">Version 0.15</a></li>
+<li><a class="reference internal" href="#version-0-14">Version 0.14</a></li>
+<li><a class="reference internal" href="#version-0-13">Version 0.13</a></li>
+<li><a class="reference internal" href="#version-0-12">Version 0.12</a></li>
+<li><a class="reference internal" href="#version-0-11">Version 0.11</a></li>
+<li><a class="reference internal" href="#version-0-10">Version 0.10</a></li>
+</ul>
+</li>
+</ul>
+<h3>Navigation</h3>
+<ul>
+  <li><a href="index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="license.html" title="previous chapter">라이선스</a>
+          
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>

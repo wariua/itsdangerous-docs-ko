@@ -1,0 +1,229 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>서명 인터페이스 &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="직렬화 인터페이스" href="serializer.html" />
+    <link rel="prev" title="itsdangerous" href="index.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="serializer.html" title="직렬화 인터페이스"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="itsdangerous"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-itsdangerous.signer"></span><div class="section" id="id1">
+<h1>서명 인터페이스<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>가장 기본적인 인터페이스는 서명 인터페이스다. <a class="reference internal" href="#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Signer</span></code></a>
+클래스를 써서 특정 문자열에 서명을 붙일 수 있다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="kn">import</span> <span class="n">Signer</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Signer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="s2">&quot;my string&quot;</span><span class="p">)</span>
+<span class="sa">b</span><span class="s1">&#39;my string.wh6tMHxLgJqB6oY1uT73iMlyrOA&#39;</span>
+</pre></div>
+</div>
+<p>마침표로 구분해서 문자열 뒤에 서명이 덧붙는다. 문자열을 검증하려면
+<a class="reference internal" href="#itsdangerous.signer.Signer.unsign" title="itsdangerous.signer.Signer.unsign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unsign()</span></code></a> 메소드를 쓰면 된다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">unsign</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;my string.wh6tMHxLgJqB6oY1uT73iMlyrOA&quot;</span><span class="p">)</span>
+<span class="sa">b</span><span class="s1">&#39;my string&#39;</span>
+</pre></div>
+</div>
+<p>유니코드 문자열을 주면 암묵적으로 UTF-8 인코딩이 이뤄진다.
+하지만 서명 검증 후에 그 문자열이 유니코드였는지 바이트열이었는지
+알 방법은 없다.</p>
+<p>값이 바뀌면 서명이 더는 일치하지 않게 되고 서명 검증 과정에서
+<a class="reference internal" href="exceptions.html#itsdangerous.exc.BadSignature" title="itsdangerous.exc.BadSignature"><code class="xref py py-exc docutils literal notranslate"><span class="pre">BadSignature</span></code></a> 예외를 던지게 된다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">unsign</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;different string.wh6tMHxLgJqB6oY1uT73iMlyrOA&quot;</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="n">itsdangerous</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">BadSignature</span><span class="p">:</span> <span class="n">Signature</span> <span class="s2">&quot;wh6tMHxLgJqB6oY1uT73iMlyrOA&quot;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span>
+</pre></div>
+</div>
+<p>서명 유효 기간을 써넣고 검증하고 싶다면 <a class="reference internal" href="timed.html"><span class="doc">타임스탬프 사용해 서명하기</span></a> 절을 보라.</p>
+<dl class="class">
+<dt id="itsdangerous.signer.Signer">
+<em class="property">class </em><code class="descclassname">itsdangerous.signer.</code><code class="descname">Signer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=None</em>, <em>sep='.'</em>, <em>key_derivation=None</em>, <em>digest_method=None</em>, <em>algorithm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer" title="Permalink to this definition">¶</a></dt>
+<dd><p>이 클래스로 바이트들에 서명을 하거나 받은 서명을 검증할
+수 있다.</p>
+<p>솔트를 사용해 일종의 해시 네임스페이스를 만들어서 서명된 문자열이
+해당 네임스페이스에서만 유효하게 할 수 있다. 솔트를 기본값 그대로
+두거나 응용의 한 부분에서 서명한 값이 다른 부분에서 어떤 의미가
+있을 때 두 곳에서 같은 솔트 값을 재사용하는 건 보안 위험 요소다.</p>
+<p>솔트의 역할이 뭐고 어떻게 활용할 수 있는지에 대한 예시는
+<a class="reference internal" href="serializer.html#the-salt"><span class="std std-ref">솔트</span></a> 참고.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.14: </span>클래스 생성자 인자로 <code class="docutils literal notranslate"><span class="pre">key_derivation</span></code> 및
+<code class="docutils literal notranslate"><span class="pre">digest_method</span></code> 추가됨.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.18: </span>클래스 생성자 인자로 <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> 추가됨.</p>
+</div>
+<dl class="staticmethod">
+<dt id="itsdangerous.signer.Signer.default_digest_method">
+<em class="property">static </em><code class="descname">default_digest_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.default_digest_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>서명에 사용할 다이제스트 메소드. 기본은 SHA1이지만
+hashlib 모듈의 다른 함수로 바꿀 수 있다.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.14.</span></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="itsdangerous.signer.Signer.default_key_derivation">
+<code class="descname">default_key_derivation</code><em class="property"> = 'django-concat'</em><a class="headerlink" href="#itsdangerous.signer.Signer.default_key_derivation" title="Permalink to this definition">¶</a></dt>
+<dd><p>키 유도 방식을 지정. 기본은 장고 스타일 접합이다.
+가능한 값으로 <code class="docutils literal notranslate"><span class="pre">concat</span></code>, <code class="docutils literal notranslate"><span class="pre">django-concat</span></code>, <code class="docutils literal notranslate"><span class="pre">hmac</span></code>이
+있다. 비밀키에 솔트를 추가해서 키를 유도하는 데 쓰인다.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.14.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.signer.Signer.derive_key">
+<code class="descname">derive_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.derive_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>이 메소드를 호출해서 키를 유도한다. 여기의 기본 키 유도
+방식을 바꿀 수 있다. 키 유도는 짧은 패스워드로 복잡한 키를
+만드는 보안 수단이 아니다. 보안을 위해선 긴 난수 비밀키를
+사용해야 한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.signer.Signer.get_signature">
+<code class="descname">get_signature</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.get_signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>값을 받아서 서명을 반환한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.signer.Signer.sign">
+<code class="descname">sign</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>문자열을 받아서 서명을 한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.signer.Signer.unsign">
+<code class="descname">unsign</code><span class="sig-paren">(</span><em>signed_value</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.unsign" title="Permalink to this definition">¶</a></dt>
+<dd><p>문자열을 받아서 검증하고 서명을 없앤다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.signer.Signer.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>signed_value</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>서명된 값을 받아서 검증만 한다. 서명이 존재하고 유효하면
+<code class="docutils literal notranslate"><span class="pre">True</span></code>를 반환한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.signer.Signer.verify_signature">
+<code class="descname">verify_signature</code><span class="sig-paren">(</span><em>value</em>, <em>sig</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.Signer.verify_signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>값을 받아서 서명을 검증한다.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="id2">
+<h2>서명 알고리듬<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="itsdangerous.signer.NoneAlgorithm">
+<em class="property">class </em><code class="descclassname">itsdangerous.signer.</code><code class="descname">NoneAlgorithm</code><a class="headerlink" href="#itsdangerous.signer.NoneAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>어떤 서명도 수행하지 않고 빈 서명을 반환하는 알고리듬을
+제공한다.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="itsdangerous.signer.HMACAlgorithm">
+<em class="property">class </em><code class="descclassname">itsdangerous.signer.</code><code class="descname">HMACAlgorithm</code><span class="sig-paren">(</span><em>digest_method=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.signer.HMACAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>HMAC을 이용하는 서명 생성 방식을 제공한다.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/itsdangerous-logo-sidebar.png" alt="Logo"/>
+            </a></p>
+  
+
+  <h3>Contents</h3>
+  <ul>
+<li><a class="reference internal" href="#">서명 인터페이스</a><ul>
+<li><a class="reference internal" href="#id2">서명 알고리듬</a></li>
+</ul>
+</li>
+</ul>
+<h3>Navigation</h3>
+<ul>
+  <li><a href="index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="index.html" title="previous chapter">itsdangerous</a>
+          <li>Next: <a href="serializer.html" title="next chapter">직렬화 인터페이스</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>

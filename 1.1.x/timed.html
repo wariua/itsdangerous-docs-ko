@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>타임스탬프 사용해 서명하기 &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="URL에 안전한 직렬화" href="url_safe.html" />
+    <link rel="prev" title="예외" href="exceptions.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="url_safe.html" title="URL에 안전한 직렬화"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="exceptions.html" title="예외"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-itsdangerous.timed"></span><div class="section" id="id1">
+<h1>타임스탬프 사용해 서명하기<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>서명이 만료되게 하고 싶다면 <a class="reference internal" href="#itsdangerous.timed.TimestampSigner" title="itsdangerous.timed.TimestampSigner"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampSigner</span></code></a> 클래스를
+쓸 수 있다. 그러면 타임스탬프 정보를 추가하고 서명한다.
+서명 검증 시 타임스탬프가 만료되지 않았는지 확인할 수 있다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="kn">import</span> <span class="n">TimestampSigner</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">TimestampSigner</span><span class="p">(</span><span class="s1">&#39;secret-key&#39;</span><span class="p">)</span>
+<span class="n">string</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">unsign</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="n">itsdangerous</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">SignatureExpired</span><span class="p">:</span> <span class="n">Signature</span> <span class="n">age</span> <span class="mi">15</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="itsdangerous.timed.TimestampSigner">
+<em class="property">class </em><code class="descclassname">itsdangerous.timed.</code><code class="descname">TimestampSigner</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=None</em>, <em>sep='.'</em>, <em>key_derivation=None</em>, <em>digest_method=None</em>, <em>algorithm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimestampSigner" title="Permalink to this definition">¶</a></dt>
+<dd><p>기본 <a class="reference internal" href="signer.html#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Signer</span></code></a>처럼 동작하되 서명 시간까지
+기록하므로 서명을 만료되게 할 수 있다. 서명이 만료돼서
+서명 검증에 실패하면 <a class="reference internal" href="#itsdangerous.timed.TimestampSigner.unsign" title="itsdangerous.timed.TimestampSigner.unsign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unsign()</span></code></a> 메소드에서
+<a class="reference internal" href="exceptions.html#itsdangerous.exc.SignatureExpired" title="itsdangerous.exc.SignatureExpired"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SignatureExpired</span></code></a>를 던질 수 있다.</p>
+<dl class="method">
+<dt id="itsdangerous.timed.TimestampSigner.get_timestamp">
+<code class="descname">get_timestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimestampSigner.get_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>현재 타임스탬프를 반환한다. 반드시 정수를 반환해야
+한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.timed.TimestampSigner.sign">
+<code class="descname">sign</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimestampSigner.sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>문자열을 받아서 서명을 하고 시간 정보를 덧붙인다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.timed.TimestampSigner.timestamp_to_datetime">
+<code class="descname">timestamp_to_datetime</code><span class="sig-paren">(</span><em>ts</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimestampSigner.timestamp_to_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.timed.TimestampSigner.get_timestamp" title="itsdangerous.timed.TimestampSigner.get_timestamp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_timestamp()</span></code></a>에서 얻은 타임스탬프를
+datetime 객체로 변환하는 데 사용.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.timed.TimestampSigner.unsign">
+<code class="descname">unsign</code><span class="sig-paren">(</span><em>value</em>, <em>max_age=None</em>, <em>return_timestamp=False</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimestampSigner.unsign" title="Permalink to this definition">¶</a></dt>
+<dd><p>기본 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Signer.unsign`()</span></code>과 비슷하게 동작하되 시간도
+검사한다. 기본 동작 방식은 기반 클래스의 docstring을 보라.
+<code class="docutils literal notranslate"><span class="pre">return_timestamp</span></code>가 <code class="docutils literal notranslate"><span class="pre">True</span></code>면 서명의 타임스탬프를
+UTC로 된 <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> 객체로 반환한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.timed.TimestampSigner.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>signed_value</em>, <em>max_age=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimestampSigner.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>서명된 값을 받아서 검증만 한다. 서명이 존재하고 유효하면
+<code class="docutils literal notranslate"><span class="pre">True</span></code>를 반환한다.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="itsdangerous.timed.TimedSerializer">
+<em class="property">class </em><code class="descclassname">itsdangerous.timed.</code><code class="descname">TimedSerializer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=b'itsdangerous'</em>, <em>serializer=None</em>, <em>serializer_kwargs=None</em>, <em>signer=None</em>, <em>signer_kwargs=None</em>, <em>fallback_signers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimedSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>기본으로 <a class="reference internal" href="signer.html#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Signer</span></code></a> 대신 <a class="reference internal" href="#itsdangerous.timed.TimestampSigner" title="itsdangerous.timed.TimestampSigner"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampSigner</span></code></a>를
+쓴다.</p>
+<dl class="attribute">
+<dt id="itsdangerous.timed.TimedSerializer.default_signer">
+<code class="descname">default_signer</code><a class="headerlink" href="#itsdangerous.timed.TimedSerializer.default_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#itsdangerous.timed.TimestampSigner" title="itsdangerous.timed.TimestampSigner"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimestampSigner</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.timed.TimedSerializer.loads">
+<code class="descname">loads</code><span class="sig-paren">(</span><em>s</em>, <em>max_age=None</em>, <em>return_timestamp=False</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimedSerializer.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code>의 반대. 서명 검증이 실패하면
+<a class="reference internal" href="exceptions.html#itsdangerous.exc.BadSignature" title="itsdangerous.exc.BadSignature"><code class="xref py py-exc docutils literal notranslate"><span class="pre">BadSignature</span></code></a>를 던진다. <code class="docutils literal notranslate"><span class="pre">max_age</span></code>를 주면 서명이
+그 초 수보다 오래됐는지 확인한다. 서명이 그보다 오래된 경우
+<a class="reference internal" href="exceptions.html#itsdangerous.exc.SignatureExpired" title="itsdangerous.exc.SignatureExpired"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SignatureExpired</span></code></a>를 던진다. 모든 인자들이 signer의
+<a class="reference internal" href="#itsdangerous.timed.TimestampSigner.unsign" title="itsdangerous.timed.TimestampSigner.unsign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unsign()</span></code></a> 메소드로 전달된다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.timed.TimedSerializer.loads_unsafe">
+<code class="descname">loads_unsafe</code><span class="sig-paren">(</span><em>s</em>, <em>max_age=None</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.timed.TimedSerializer.loads_unsafe" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.timed.TimedSerializer.loads" title="itsdangerous.timed.TimedSerializer.loads"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads()</span></code></a>와 비슷하되 서명 검증이 빠져 있다.
+직렬화 모듈 동작 방식에 따라선 아주 위험한 동작일 수도
+있다. 반환 값이 단순 페이로드가 아니라 <code class="docutils literal notranslate"><span class="pre">(signature_valid,</span>
+<span class="pre">payload)</span></code>다. 첫 항목은 서명이 유효한지 여부를 나타내는
+불리언이다. 이 함수는 절대 실패하지 않는다.</p>
+<p>디버깅용으로만, 그리고 직렬화 모듈에 취약성이 없다는 게
+확실할 때만 써야 한다. (예를 들어 pickle 직렬화 모듈에는
+쓰지 말아야 한다.)</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.15.</span></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/itsdangerous-logo-sidebar.png" alt="Logo"/>
+            </a></p>
+  
+<h3>Navigation</h3>
+<ul>
+  <li><a href="index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="exceptions.html" title="previous chapter">예외</a>
+          <li>Next: <a href="url_safe.html" title="next chapter">URL에 안전한 직렬화</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>

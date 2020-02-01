@@ -1,0 +1,125 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>URL에 안전한 직렬화 &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="JSON 웹 서명 (JWS)" href="jws.html" />
+    <link rel="prev" title="타임스탬프 사용해 서명하기" href="timed.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="jws.html" title="JSON 웹 서명 (JWS)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="timed.html" title="타임스탬프 사용해 서명하기"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-itsdangerous.url_safe"></span><div class="section" id="url">
+<h1>URL에 안전한 직렬화<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h1>
+<p>제한된 문자들만 쓸 수 있는 곳으로 신뢰하는 문자열을 보냈으면
+할 때가 많다. 그래서 itsdangerous에서는 URL에 안전한 직렬화
+방식을 함께 제공한다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous.url_safe</span> <span class="kn">import</span> <span class="n">URLSafeSerializer</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">URLSafeSerializer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="s1">&#39;WzEsMiwzLDRd.wSPHqC0gR7VUqivlSukJ0IeTDgo&#39;</span>
+<span class="n">s</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;WzEsMiwzLDRd.wSPHqC0gR7VUqivlSukJ0IeTDgo&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="itsdangerous.url_safe.URLSafeSerializer">
+<em class="property">class </em><code class="descclassname">itsdangerous.url_safe.</code><code class="descname">URLSafeSerializer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=b'itsdangerous'</em>, <em>serializer=None</em>, <em>serializer_kwargs=None</em>, <em>signer=None</em>, <em>signer_kwargs=None</em>, <em>fallback_signers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.url_safe.URLSafeSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="serializer.html#itsdangerous.serializer.Serializer" title="itsdangerous.serializer.Serializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Serializer</span></code></a>처럼 동작하되 알파벳 대소문자와
+<code class="docutils literal notranslate"><span class="pre">'_'</span></code>, <code class="docutils literal notranslate"><span class="pre">'-'</span></code>, <code class="docutils literal notranslate"><span class="pre">'.'</span></code>로 이뤄진 URL 안전 문자열을
+덤프 및 적재한다.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="itsdangerous.url_safe.URLSafeTimedSerializer">
+<em class="property">class </em><code class="descclassname">itsdangerous.url_safe.</code><code class="descname">URLSafeTimedSerializer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=b'itsdangerous'</em>, <em>serializer=None</em>, <em>serializer_kwargs=None</em>, <em>signer=None</em>, <em>signer_kwargs=None</em>, <em>fallback_signers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.url_safe.URLSafeTimedSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="timed.html#itsdangerous.timed.TimedSerializer" title="itsdangerous.timed.TimedSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimedSerializer</span></code></a>처럼 동작하되 알파벳 대소문자와
+<code class="docutils literal notranslate"><span class="pre">'_'</span></code>, <code class="docutils literal notranslate"><span class="pre">'-'</span></code>, <code class="docutils literal notranslate"><span class="pre">'.'</span></code>로 이뤄진 URL 안전 문자열을
+덤프 및 적재한다.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/itsdangerous-logo-sidebar.png" alt="Logo"/>
+            </a></p>
+  
+<h3>Navigation</h3>
+<ul>
+  <li><a href="index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="timed.html" title="previous chapter">타임스탬프 사용해 서명하기</a>
+          <li>Next: <a href="jws.html" title="next chapter">JSON 웹 서명 (JWS)</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>

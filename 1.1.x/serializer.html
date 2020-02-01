@@ -1,0 +1,357 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>직렬화 인터페이스 &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="예외" href="exceptions.html" />
+    <link rel="prev" title="서명 인터페이스" href="signer.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="exceptions.html" title="예외"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="signer.html" title="서명 인터페이스"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-itsdangerous.serializer"></span><div class="section" id="id1">
+<h1>직렬화 인터페이스<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="signer.html"><span class="doc">서명 인터페이스</span></a>는 문자열에만 서명을 한다. 다른 타입에도 서명을
+할 수 있도록 <a class="reference internal" href="#itsdangerous.serializer.Serializer" title="itsdangerous.serializer.Serializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Serializer</span></code></a> 클래스에는 파이썬 <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a>
+모듈과 비슷한 <code class="docutils literal notranslate"><span class="pre">dumps</span></code>/<code class="docutils literal notranslate"><span class="pre">loads</span></code> 인터페이스가 있어서 오브젝트를
+문자열로 직렬화 한 다음 서명을 해 준다.</p>
+<p><a class="reference internal" href="#itsdangerous.serializer.Serializer.dumps" title="itsdangerous.serializer.Serializer.dumps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code></a>를 사용해 데이터를 직렬화 하고 서명 한다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous.serializer</span> <span class="kn">import</span> <span class="n">Serializer</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Serializer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="sa">b</span><span class="s1">&#39;[1, 2, 3, 4].r7R9RhGgDPvvWl3iNzLuIIfELmo&#39;</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#itsdangerous.serializer.Serializer.loads" title="itsdangerous.serializer.Serializer.loads"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads()</span></code></a> 를 사용해 서명을 검증하고 데이터를
+역직렬화 한다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s1">&#39;[1, 2, 3, 4].r7R9RhGgDPvvWl3iNzLuIIfELmo&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>기본적으로 데이터를 JSON으로 직렬화 한다. simplejson이 설치돼
+있으면 내장 <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a> 모듈 대신 사용한다. 서브클래스를 만들어서
+그 내부 직렬화 모듈을 바꿀 수 있다.</p>
+<p>서명의 유효 기간을 기록하고 검증하고 싶다면 <a class="reference internal" href="timed.html"><span class="doc">타임스탬프 사용해 서명하기</span></a> 절을
+보라. URL에 쓰기 안전한 형식으로 직렬화 하고 싶다면
+<a class="reference internal" href="url_safe.html"><span class="doc">URL에 안전한 직렬화</span></a> 절을 보라.</p>
+<div class="section" id="the-salt">
+<span id="id2"></span><h2>솔트<a class="headerlink" href="#the-salt" title="Permalink to this headline">¶</a></h2>
+<p>모든 클래스들이 솔트 인자도 받는다. 이름이 오해를 유발할 수도 있을
+것 같다. 일반적으로 암호학에서 솔트라고 하면 서명된 결과 문자열과
+함께 저장해서 레인보 테이블 검색을 막는 뭔가를 기대할 것이기
+때문이다. 그런 솔트는 일반적으로 공개된다.</p>
+<p>itsdangerous에서는 원래 장고 구현에서처럼 솔트가 다른 역할을 한다.
+일종의 네임스페이스라고 볼 수도 있다. 이 역시 공개돼도 크게 위험하지
+않는데, 비밀키 없이는 공격자에게 도움이 안 되기 때문이다.</p>
+<p>서명하려는 링크가 두 개 있다고 해 보자. 시스템 상에서 사용자 계정을
+활성화할 수 있는 활성화 링크가 있고 사용자의 계정을 유료 계정으로
+업그레이드 할 수 있는 업그레이드 링크가 있어서 이메일을 통해 보낸다.
+두 경우 모두 사용자 ID에만 서명을 한다면 어느 사용자가 활성 링크
+URL의 변수 부분을 재사용해서 계정을 업그레이드 할 수도 있을 것이다.
+이 경우 더 많은 정보(가령 용도, 업그레이드 또는 활성)를 서명 대상에
+포함시킬 수도 있겠지만 다른 솔트를 쓰는 방법도 가능하다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous.url_safe</span> <span class="kn">import</span> <span class="n">URLSafeSerializer</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">URLSafeSerializer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s2">&quot;activate&quot;</span><span class="p">)</span>
+<span class="n">s1</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="s1">&#39;NDI.MHQqszw6Wc81wOBQszCrEE_RlzY&#39;</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">URLSafeSerializer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s2">&quot;upgrade&quot;</span><span class="p">)</span>
+<span class="n">s2</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="s1">&#39;NDI.c0MpsD6gzpilOAeUPra3NShPXsE&#39;</span>
+</pre></div>
+</div>
+<p>첫 번째 직렬화 객체가 내놓은 데이터를 두 번째 직렬화 객체로 받을 수
+없다. 솔트가 다르기 때문이다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s2</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s1</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="o">...</span>
+<span class="n">itsdangerous</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">BadSignature</span><span class="p">:</span> <span class="n">Signature</span> <span class="s2">&quot;MHQqszw6Wc81wOBQszCrEE_RlzY&quot;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">match</span>
+</pre></div>
+</div>
+<p>솔트가 같은 직렬화 객체로만 데이터를 받을 수 있다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s2</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s2</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
+<span class="mi">42</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>실패 대응<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>예외에는 유용한 속성들이 있어서 서명 검사가 실패한 경우 페이로드를
+살펴볼 수 있다. 그 경우 특별히 주의할 필요가 있는데 그 지점으로
+갔다는 건 누군가 데이터를 조작했다는 뜻이기 때문이다. 디버깅 용도에
+유용할 수도 있다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous.serializer</span> <span class="kn">import</span> <span class="n">Serializer</span>
+<span class="kn">from</span> <span class="nn">itsdangerous.exc</span> <span class="kn">import</span> <span class="n">BadSignature</span><span class="p">,</span> <span class="n">BadData</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">URLSafeSerializer</span><span class="p">(</span><span class="s2">&quot;secret-key&quot;</span><span class="p">)</span>
+<span class="n">decoded_payload</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">decoded_payload</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># 페이로드를 디코딩 했으며 안전함</span>
+<span class="k">except</span> <span class="n">BadSignature</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">payload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">decoded_payload</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">load_payload</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">BadData</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1"># 페이로드를 디코딩 했지만 누군가 서명을 조작했으므로</span>
+        <span class="c1"># 안전하지 않음. 명시적으로 디코딩(load_payload) 단계가</span>
+        <span class="c1"># 있는 건 페이로드를 역직렬화 하는 게 안전하지 않을 수도</span>
+        <span class="c1"># 있기 때문. (json이 아니라 pickle이라고 생각해 보라!)</span>
+</pre></div>
+</div>
+<p>속성을 들여다봐서 정확히 뭐가 잘못됐는지 알아내려는 게 아니라면
+<a class="reference internal" href="#itsdangerous.serializer.Serializer.loads_unsafe" title="itsdangerous.serializer.Serializer.loads_unsafe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads_unsafe()</span></code></a>를 쓸 수도 있다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sig_okay</span><span class="p">,</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">loads_unsafe</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>반환되는 튜플의 첫 번째 항목이 서명이 올바른지 나타내는 불리언이다.</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="itsdangerous.serializer.Serializer">
+<em class="property">class </em><code class="descclassname">itsdangerous.serializer.</code><code class="descname">Serializer</code><span class="sig-paren">(</span><em>secret_key</em>, <em>salt=b'itsdangerous'</em>, <em>serializer=None</em>, <em>serializer_kwargs=None</em>, <em>signer=None</em>, <em>signer_kwargs=None</em>, <em>fallback_signers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>이 클래스는 signer 위에서 직렬화 인터페이스를 제공한다.
+json/pickle이나 여타 모듈들과 비슷한 API를 제공하지만 내부
+구조는 다르게 돼 있다. 기반 파싱 및 적재 구현을 바꾸고
+싶다면 <a class="reference internal" href="#itsdangerous.serializer.Serializer.load_payload" title="itsdangerous.serializer.Serializer.load_payload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_payload()</span></code></a> 및 <a class="reference internal" href="#itsdangerous.serializer.Serializer.dump_payload" title="itsdangerous.serializer.Serializer.dump_payload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dump_payload()</span></code></a> 함수를
+오버라이드 해야 한다.</p>
+<p>이 구현에서는 사용 가능한 경우 simplejson을 써서 dump와
+load를 한다. 사용 가능하지 않은 경우에는 표준 라이브러리의
+json 모듈로 대신한다.</p>
+<p><a class="reference internal" href="signer.html#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Signer</span></code></a>를 교체하거나 동작을 수정하려고 하는 경우에
+이 클래스의 서브클래스를 만들 필요가 없다. 생성자에 다른
+클래스를 주고 거기 전달할 키워드 인자들을 딕셔너리로
+주면 된다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Serializer</span><span class="p">(</span><span class="n">signer_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;key_derivation&#39;</span><span class="p">:</span> <span class="s1">&#39;hmac&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>서명 매개변수를 업그레이드 하면서 사용 중인 기존 서명들이
+무효가 되지 않게 하고 싶을 수 있다. 현재 서명 방식으로
+서명 검증이 실패할 때 시도할 대체 서명 방식을 줄 수 있다.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fallback_signers</span></code>에 리스트를 줘서 대체 서명 방식들을
+지정할 수 있다. 각 항목은 (<code class="docutils literal notranslate"><span class="pre">signer_kwargs</span></code>, <code class="docutils literal notranslate"><span class="pre">salt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">secret_key</span></code>로 만든) signer 인스턴스거나, 튜플
+<code class="docutils literal notranslate"><span class="pre">(signer_class,</span> <span class="pre">signer_kwargs)</span></code>이거나,
+<code class="docutils literal notranslate"><span class="pre">signer_kwargs</span></code>의 딕셔너리일 수 있다.</p>
+<p>예를 들어 다음은 SHA-512로 서명하고 SHA-512나 SHA1 중 하나로
+서명을 없애는 직렬화 객체다.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Serializer</span><span class="p">(</span>
+    <span class="n">signer_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;digest_method&quot;</span><span class="p">:</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">},</span>
+    <span class="n">fallback_signers</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;digest_method&quot;</span><span class="p">:</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">}]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.14:: </span>생성자에 매개변수 <code class="docutils literal notranslate"><span class="pre">signer</span></code>와 <code class="docutils literal notranslate"><span class="pre">signer_kwargs</span></code>가
+추가됨.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 1.1.0:: </span><code class="docutils literal notranslate"><span class="pre">fallback_signers</span></code> 지원이 추가되고 실패 시 기본적으로
+SHA-512를 대신 쓰도록 구성됨. 이 대체 동작은 기본적으로
+SHA-512를 썼던 1.0.0 릴리스를 썼던 사용자들을 위한 것이다.</p>
+</div>
+<dl class="attribute">
+<dt id="itsdangerous.serializer.Serializer.default_fallback_signers">
+<code class="descname">default_fallback_signers</code><em class="property"> = [{'digest_method': &lt;built-in function openssl_sha512&gt;}]</em><a class="headerlink" href="#itsdangerous.serializer.Serializer.default_fallback_signers" title="Permalink to this definition">¶</a></dt>
+<dd><p>기본 대체 서명 방식.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="itsdangerous.serializer.Serializer.default_serializer">
+<code class="descname">default_serializer</code><em class="property"> = &lt;module 'json' from '/usr/lib/python3.6/json/__init__.py'&gt;</em><a class="headerlink" href="#itsdangerous.serializer.Serializer.default_serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>생성자에 직렬화 모듈 내지 클래스를 주지 않으면
+이걸 쓴다. 현재 기본은 <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a>이다.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="itsdangerous.serializer.Serializer.default_signer">
+<code class="descname">default_signer</code><a class="headerlink" href="#itsdangerous.serializer.Serializer.default_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="signer.html#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">itsdangerous.signer.Signer</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>obj</em>, <em>f</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.serializer.Serializer.dumps" title="itsdangerous.serializer.Serializer.dumps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code></a>와 비슷하되 파일로 덤프 한다. 파일
+핸들이 내부 직렬화 모듈과 호환돼야 한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.dump_payload">
+<code class="descname">dump_payload</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.dump_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>인코딩 된 객체를 덤프 한다. 반환 값은 항상 bytes다.
+내부 직렬화 모듈에서 텍스트를 반환하면 UTF-8으로
+인코딩 된다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.dumps">
+<code class="descname">dumps</code><span class="sig-paren">(</span><em>obj</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>내부 직렬화 모듈로 직렬화 한 서명된 문자열을
+반환한다. 내부 직렬화 모듈의 형식에 따라서 반환 값이
+바이트열이나 유니코드열이다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.iter_unsigners">
+<code class="descname">iter_unsigners</code><span class="sig-paren">(</span><em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.iter_unsigners" title="Permalink to this definition">¶</a></dt>
+<dd><p>서명 검증에 시도할 서명 방식들을 모두 순회한다. 설정한
+서명 방식으로 시작해서 <code class="docutils literal notranslate"><span class="pre">fallback_signers</span></code>에 지정한
+서명 방식 각각을 만든다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>f</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.load" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.serializer.Serializer.loads" title="itsdangerous.serializer.Serializer.loads"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads()</span></code></a>와 비슷하되 파일로부터 적재한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.load_payload">
+<code class="descname">load_payload</code><span class="sig-paren">(</span><em>payload</em>, <em>serializer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.load_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>인코딩 된 객체를 적재한다. 페이로드가 유효하지 않으면
+함수에서 <a class="reference internal" href="exceptions.html#itsdangerous.exc.BadPayload" title="itsdangerous.exc.BadPayload"><code class="xref py py-class docutils literal notranslate"><span class="pre">BadPayload</span></code></a>를 던진다. <code class="docutils literal notranslate"><span class="pre">serializer</span></code>
+매개변수를 이용하면 클래스에 저장된 것과 다른 직렬화
+방식을 쓸 수 있다. 인코딩 된 <code class="docutils literal notranslate"><span class="pre">payload</span></code>는 항상
+bytes여야 한다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.load_unsafe">
+<code class="descname">load_unsafe</code><span class="sig-paren">(</span><em>f</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.load_unsafe" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.serializer.Serializer.loads_unsafe" title="itsdangerous.serializer.Serializer.loads_unsafe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads_unsafe()</span></code></a>와 비슷하되 파일로부터 적재한다.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.15.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.loads">
+<code class="descname">loads</code><span class="sig-paren">(</span><em>s</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.serializer.Serializer.dumps" title="itsdangerous.serializer.Serializer.dumps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dumps()</span></code></a>의 반대. 서명 검증이 실패하면
+<a class="reference internal" href="exceptions.html#itsdangerous.exc.BadSignature" title="itsdangerous.exc.BadSignature"><code class="xref py py-exc docutils literal notranslate"><span class="pre">BadSignature</span></code></a>를 던진다.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.loads_unsafe">
+<code class="descname">loads_unsafe</code><span class="sig-paren">(</span><em>s</em>, <em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.loads_unsafe" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#itsdangerous.serializer.Serializer.loads" title="itsdangerous.serializer.Serializer.loads"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loads()</span></code></a>와 비슷하되 서명 검증이 빠져 있다.
+직렬화 모듈 동작 방식에 따라선 아주 위험한 동작일 수도
+있다. 반환 값이 단순 페이로드가 아니라 <code class="docutils literal notranslate"><span class="pre">(signature_valid,</span>
+<span class="pre">payload)</span></code>다. 첫 항목은 서명이 유효한지 여부를 나타내는
+불리언이다. 이 함수는 절대 실패하지 않는다.</p>
+<p>디버깅용으로만, 그리고 직렬화 모듈에 취약성이 없다는 게
+확실할 때만 써야 한다. (예를 들어 pickle 직렬화 모듈에는
+쓰지 말아야 한다.)</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.15.</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="itsdangerous.serializer.Serializer.make_signer">
+<code class="descname">make_signer</code><span class="sig-paren">(</span><em>salt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#itsdangerous.serializer.Serializer.make_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p>사용할 signer 인스턴스를 새로 만든다. 기본 구현에서는
+기반 클래스 <a class="reference internal" href="signer.html#itsdangerous.signer.Signer" title="itsdangerous.signer.Signer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Signer</span></code></a>를 쓴다.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+    
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/itsdangerous-logo-sidebar.png" alt="Logo"/>
+            </a></p>
+  
+
+  <h3>Contents</h3>
+  <ul>
+<li><a class="reference internal" href="#">직렬화 인터페이스</a><ul>
+<li><a class="reference internal" href="#the-salt">솔트</a></li>
+<li><a class="reference internal" href="#id3">실패 대응</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+<h3>Navigation</h3>
+<ul>
+  <li><a href="index.html">Overview</a>
+    <ul>
+          <li>Previous: <a href="signer.html" title="previous chapter">서명 인터페이스</a>
+          <li>Next: <a href="exceptions.html" title="next chapter">예외</a>
+    </ul>
+  </li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>

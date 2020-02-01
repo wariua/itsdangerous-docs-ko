@@ -1,0 +1,181 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>itsdangerous &#8212; itsdangerous Documentation (1.1.x)</title>
+    <link rel="stylesheet" href="_static/flask.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="서명 인터페이스" href="signer.html" />
+  <script>DOCUMENTATION_OPTIONS.URL_ROOT = './';</script>
+   
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="signer.html" title="서명 인터페이스"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">itsdangerous Documentation (1.1.x)</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="hide-header section" id="itsdangerous">
+<h1>itsdangerous<a class="headerlink" href="#itsdangerous" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://palletsprojects.com/p/itsdangerous/"><img alt="_images/itsdangerous-logo.png" class="align-center" src="_images/itsdangerous-logo.png" /></a>
+<p>가끔씩 신뢰할 수 없는 환경으로 어떤 데이터를 보내고 싶을 때가 있다.
+안전하게 보내려면 어떻게 해야 할까? 방법은 바로 서명이다. 당신만
+알고 있는 어떤 키를 두고, 데이터를 암호학적으로 서명해서 다른
+누군가에게 넘긴다. 그럼 그 데이터를 돌려받았을 때 누가 데이터를
+조작했는지 여부를 쉽게 확인할 수 있다.</p>
+<p>수신자는 컨텐츠를 해독하고 그 안에 뭐가 있는지 볼 수 있지만
+당신의 비밀키를 가지고 있지 않는 한 컨텐츠를 변경할 수는 없다.
+그러니 당신은 키를 안전하고 복잡하게 유지하기만 하면 된다.</p>
+<p>내부적으로 itsdangerous는 서명에 기본적으로 HMAC과 SHA-512를 쓴다.
+처음 구현은 <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/signing/">장고의 서명 모듈</a>에서
+영감을 얻었다. JSON 웹 서명(JWS)도 지원한다. BSD 라이선스에 따라
+쓸 수 있다.</p>
+<div class="section" id="id2">
+<h2>설치<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://pip.pypa.io/en/stable/quickstart/">pip</a>로 설치하고 업데이트 하면 된다.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip install -U itsdangerous
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>사용례<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>사용자 ID를 직렬화하고 서명해서 URL에 넣어 이메일로 보내서
+뉴스레터 구독을 해지할 수 있게 하기. 이렇게 하면 일회용
+토큰을 생성해서 데이터베이스에 저장해 둘 필요가 없다. 계정이나
+비슷한 뭔가에 대한 활성화 링크 같은 것도 마찬가지다.</li>
+<li>서명된 객체를 쿠키나 기타 신뢰할 수 없는 곳에 저장할 수 있다.
+이는 서버에 세션을 저장할 필요가 없다는 뜻이고 그러면
+데이터베이스 질의 횟수가 줄어든다.</li>
+<li>서명된 정보가 안전하게 서버와 클라이언트 사이를 오갈 수 있다.
+따라서 서버 측 상태 정보를 클라이언트에게 보냈다가 돌려받는 데
+유용하다.</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>차례<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="signer.html">서명 인터페이스</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="signer.html#id2">서명 알고리듬</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="serializer.html">직렬화 인터페이스</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="serializer.html#the-salt">솔트</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serializer.html#id3">실패 대응</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serializer.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">예외</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timed.html">타임스탬프 사용해 서명하기</a></li>
+<li class="toctree-l1"><a class="reference internal" href="url_safe.html">URL에 안전한 직렬화</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jws.html">JSON 웹 서명 (JWS)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="encoding.html">인코딩 유틸리티</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">라이선스</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">변경 사항</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-1-1-0">Version 1.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-24">Version 0.24</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-23">Version 0.23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-22">Version 0.22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-21">Version 0.21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-20">Version 0.20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-19">Version 0.19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-18">Version 0.18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-17">Version 0.17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-16">Version 0.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-15">Version 0.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-14">Version 0.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-13">Version 0.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-12">Version 0.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-11">Version 0.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html#version-0-10">Version 0.10</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  <span id="sidebar-top"></span>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  
+
+  <h3>Project Links</h3>
+  <ul>
+    <li><a href="https://palletsprojects.com/donate">Pallets에 후원하기</a>
+  
+    <li><a href="https://palletsprojects.com/p/itsdangerous/">웹사이트</a>
+  
+    <li><a href="https://pypi.org/project/itsdangerous/">PyPI 릴리스</a>
+  
+    <li><a href="https://github.com/pallets/itsdangerous/">소스 코드</a>
+  
+    <li><a href="https://github.com/pallets/itsdangerous/issues/">이슈 트래커</a>
+  </ul>
+  <h3>Contents</h3>
+  <ul>
+<li><a class="reference internal" href="#">itsdangerous</a><ul>
+<li><a class="reference internal" href="#id2">설치</a></li>
+<li><a class="reference internal" href="#id3">사용례</a></li>
+<li><a class="reference internal" href="#id4">차례</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011 Pallets Team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+
+  </body>
+</html>
