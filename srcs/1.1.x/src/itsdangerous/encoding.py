@@ -13,16 +13,16 @@ def want_bytes(s, encoding="utf-8", errors="strict"):
 
 
 def base64_encode(string):
-    """Base64 encode a string of bytes or text. The resulting bytes are
-    safe to use in URLs.
+    """바이트열 내지 텍스트를 base64 인코딩 한다. 결과로 나오는 bytes를
+    URL에 안전하게 쓸 수 있다.
     """
     string = want_bytes(string)
     return base64.urlsafe_b64encode(string).rstrip(b"=")
 
 
 def base64_decode(string):
-    """Base64 decode a URL-safe string of bytes or text. The result is
-    bytes.
+    """URL에 안전한 바이트열 내지 텍스트를 base64 디코딩 한다. 결과는
+    bytes다.
     """
     string = want_bytes(string, encoding="ascii", errors="ignore")
     string += b"=" * (-len(string) % 4)
