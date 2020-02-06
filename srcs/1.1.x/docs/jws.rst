@@ -6,7 +6,7 @@ JSON 웹 서명 (JWS)
 JSON 웹 서명(JWS)은 앞서 본 URL 안전 직렬화와 비슷하게
 동작하되 `draft-ietf-jose-json-web-signature <http://self-issued.info/
 docs/draft-ietf-jose-json-web-signature.html>`_\에 따라 헤더를
-찍는다.
+내놓는다.
 
 .. code-block:: python
 
